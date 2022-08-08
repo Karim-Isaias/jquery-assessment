@@ -1,12 +1,12 @@
-// const { default: Swal } = require("sweetalert2");
-import { default as Swal } from "sweetalert2";
-
-let elementId;
+let asc = true;
+let supLimit = 240;
+let infLimit = 0;
+let position = 0;
 $(document).ready(function () {
     let dataValues;
     $.ajax({
         type: "GET",
-        url: "https://restcountries.com/v3.1/all",
+        url: "countries.json",
         dataType: "json",
         data: {
             country: "country"
@@ -17,28 +17,79 @@ $(document).ready(function () {
         }
     });
 
-    $("#sort").click(function () {
+    $("#sort").on('click', () => {
+        $("#countries").empty();
         if (asc) {
-            $("#countries").empty()
+            position = supLimit;
+            asc = false;
             orderDescend(dataValues);
-        } else {
-            $("#countries").empty()
+            $("#sort").html('Sort Asc');
+        } else if (!asc) {
+            position = infLimit;
+            asc = true;
             orderAscend(dataValues);
+            $("#sort").html('Sort Desc');
         }
-    })
+    });
+
+    $("#back").on('click', () => {
+        $("#countries").empty();
+        if (asc) {
+            if (position === 0) {
+                alert('This is the first page');
+                orderAscend(dataValues);
+            } else {
+                position -= 10;
+                infLimit = position;
+                supLimit += 10;
+                orderAscend(dataValues);
+            }
+        } else {
+            if (position === 240) {
+                alert('This is the first page');
+                orderDescend(dataValues);
+            } else {
+                position += 10;
+                supLimit = position;
+                infLimit -= 10;
+                orderDescend(dataValues);
+            }
+        }
+    });
+
+    $("#next").on('click', () => {
+        $("#countries").empty();
+        if (asc) {
+            if (position === 240) {
+                alert('This is the last page');
+                orderAscend(dataValues);
+            } else {
+                position += 10;
+                infLimit = position;
+                supLimit -= 10;
+                orderAscend(dataValues);
+            }
+        } else {
+            if (position === 0) {
+                alert('This is the last page');
+                orderDescend(dataValues);
+            } else {
+                position -= 10;
+                supLimit = position;
+                infLimit += 10;
+                orderDescend(dataValues);
+            }
+        }
+    });
 
 });
 
-let asc = true;
-let modalId;
-
 const orderAscend = (data) => {
     let ascData = data.sort((a, b) => ('' + a.name.official).localeCompare(b.name.official));
-    for (let i = 0; i < ascData.length; i++) {
+    for (let i = 0 + position; i < (ascData.length / 25) + position; i++) {
         idCountry = ascData[i].name.common;
         Object.prototype.toString(idCountry);
         idCountryCleaned = idCountry.replace(/\s/g, '_');
-        modalId = ascData[i].name.common;
         officialName = ascData[i].name.official;
         region = ascData[i].region;
         population = ascData[i].population;
@@ -48,34 +99,31 @@ const orderAscend = (data) => {
         if (ascData[i].languages === undefined) {
             firstLanguage = 'No language to display';
         } else {
-            firstLanguage = Object.values(ascData[i].languages)[0]
+            firstLanguage = Object.values(ascData[i].languages)[0];
         }
         if (ascData[i].capital === undefined) {
             capital = 'No capital';
         } else {
-            capital = Object.values(ascData[i].capital)[0]
+            capital = Object.values(ascData[i].capital)[0];
         }
 
-        $("#countries").append($(`<tr id=${idCountryCleaned} onClic=${getId()}>`)
-        .append($(`<td id=${idCountryCleaned}> ${officialName} </td>`))
-        .append($(`<td id=${idCountryCleaned}> ${capital} </td>`))
-        .append($(`<td id=${idCountryCleaned}> ${region} </td>`))
-        .append($(`<td id=${idCountryCleaned}> ${firstLanguage} </td>`))
-        .append($(`<td id=${idCountryCleaned}> ${population} </td>`))
-        .append($(`<td id=${idCountryCleaned}><img src=${imgPath} class='img-fluid w-50'></td>`))
+        $("#countries").append($(`<tr>`)
+            .append($(`<td id=${idCountryCleaned}> ${officialName} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${capital} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${region} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${firstLanguage} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${population} </td>`))
+            .append($(`<td id=${idCountryCleaned}><img src=${imgPath} class='img-fluid w-50'></td>`))
         );
     }
-    asc = true;
 }
 
 const orderDescend = (data) => {
     let desData = data.sort((a, b) => ('' + b.name.official).localeCompare(a.name.official));
-    let idCountry;
-    for (let i = 0; i < desData.length; i++) {
+    for (let i = 0 + position; i < (desData.length / 25) + position; i++) {
         idCountry = desData[i].name.common;
         Object.prototype.toString(idCountry);
         idCountryCleaned = idCountry.replace(/\s/g, '_');
-        modalId = desData[i].name.common;
         officialName = desData[i].name.official;
         region = desData[i].region;
         population = desData[i].population;
@@ -85,15 +133,15 @@ const orderDescend = (data) => {
         if (desData[i].languages === undefined) {
             firstLanguage = 'No language to display';
         } else {
-            firstLanguage = Object.values(desData[i].languages)[0]
+            firstLanguage = Object.values(desData[i].languages)[0];
         }
         if (desData[i].capital === undefined) {
             capital = 'No capital';
         } else {
-            capital = Object.values(desData[i].capital)[0]
+            capital = Object.values(desData[i].capital)[0];
         }
 
-        $("#countries").append($(`<tr id=${idCountryCleaned} onClic=${getId()}>`)
+        $("#countries").append($(`<tr>`)
             .append($(`<td id=${idCountryCleaned}> ${officialName} </td>`))
             .append($(`<td id=${idCountryCleaned}> ${capital} </td>`))
             .append($(`<td id=${idCountryCleaned}> ${region} </td>`))
@@ -102,11 +150,9 @@ const orderDescend = (data) => {
             .append($(`<td id=${idCountryCleaned}><img src=${imgPath} class='img-fluid w-50'></td>`))
         );
     }
-    asc = false;
 }
 
 const modal = (elementId) => {
-    Object.prototype.toString(elementId)
     if (elementId !== '') {
         $.ajax({
             type: "GET",
@@ -118,12 +164,12 @@ const modal = (elementId) => {
             success: function (data) {
                 html = data.extract_html;
                 title = data.title;
-                flag = data.thumbnail.source;
+                thumbnail = data.thumbnail.source;
 
                 Swal.fire({
                     title: title,
                     html: html,
-                    iconHtml: "<img src=" + flag + " width=300 height=130>",
+                    iconHtml: "<img src=" + thumbnail + " width=300 height=130>",
                     confirmButtonText: 'Back'
                 });
             }
@@ -133,9 +179,8 @@ const modal = (elementId) => {
     }
 }
 
-const getId = (e) => {
-    $('tr').click((e) => {
-        elementId = e.target.id;
-        modal(elementId);
-    })
-}
+$('#table-countries').on('click', (e) => {
+    elementId = e.target.id;
+    e.stopPropagation();
+    modal(elementId);
+})
