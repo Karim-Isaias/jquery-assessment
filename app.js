@@ -1,8 +1,4 @@
 $(document).ready(() => {
-    setInterval(blinkText, 1000);
+    $('thead').addClass('title');
+    $('tbody tr:nth-child(2n)').addClass("zebra");
 });
-
-const blinkText = () => {
-    $('.blink').fadeOut(500);
-    $('.blink').fadeIn(500);
-}
