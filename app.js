@@ -1,9 +1,8 @@
 $(document).ready(() => {
-    $('#toggle').on('click', () => {
-        if($('#submit').is(':disabled')){
-            $('#submit').removeAttr('disabled');
-        } else {
-            $('#submit').attr('disabled', 'disabled');
-        }
-    }); 
+    setInterval(blinkText, 1000);
 });
+
+const blinkText = () => {
+    $('.blink').fadeOut(500);
+    $('.blink').fadeIn(500);
+}
