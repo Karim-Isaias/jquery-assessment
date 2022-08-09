@@ -1,17 +1,31 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JQuery 4</title>
+    <title>JQuery 5</title>
 </head>
+
 <body>
-    <button id="toggle">Toggle Submit</button>
-    <input id="submit" disabled="disabled" type="submit" value="Submit">
+    <div>Image with error</div>
+    <a href="https://www.w3resource.com">
+        <img src="//www.w3resource.com/image/w3resourcelogo.gif" alt="w3resource logo" width="150" height="78" />
+    </a>
+    <div>Image with error (Not Displayed)</div>
+    <a href="https://www.w3resource.com">
+        <img src="//www.w3resource.com/image/w3resourcelogo.gif" alt="w3resource logo" width="150" height="78"
+            onerror='$(this).hide();' />
+    </a>
+    <div>Image fixed</div>
+    <a href="https://www.w3resource.com">
+        <img src="//www.w3resource.com/images/w3resource-logo.png" alt="w3resource logo" width="150" height="78"
+            onerror='$(this).hide();' />
+    </a>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="app.js"></script>
 </body>
 
