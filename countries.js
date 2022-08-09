@@ -14,6 +14,20 @@ $(document).ready(function () {
         success: function (data) {
             dataValues = data;
             orderAscend(data);
+            // contentFilter(data);
+            $('#textFilter').on('keyup', () => {
+                if ($('#textFilter').val() !== '' && $('#textFilter').val().length >= 3) {
+                    $("#countries").empty();
+                    contentFilter(data);
+                    console.log('Filtrado');
+                } else {
+                    $("#countries").empty();
+                    orderAscend(data);
+                    console.log('No Filtrado');
+                }
+            })
+
+            // filter(data);
         }
     });
 
@@ -82,12 +96,30 @@ $(document).ready(function () {
         }
     });
 
+    // $('#filterText').on('keyup', () => {
+    //     $('#countries').filter('tr', () => {
+
+    //     })
+    // });
+
+    // oTable = $('#table-countries').DataTable(); 
+    // $('#filterText').keyup(function () {
+    //     oTable.search($(this).val()).draw();
+    // })
+
 });
 
 const orderAscend = (data) => {
+    // $('#filterText').on('keyup', () => {
+    //     let filter = $('#filterText').val().toLowerCase();
+    //     console.log(filter);
+    //     $('#countries').filter($(data), () => {
+    //         $(this).toggle($(this).text().toLowerCase().indexOf(filter) > -1)
+    //     });
+    // });
     let ascData = data.sort((a, b) => ('' + a.name.official).localeCompare(b.name.official));
     for (let i = 0 + position; i < (ascData.length / 25) + position; i++) {
-        idCountry = ascData[i].name.common;
+        idCountry = ascData[i].name.official;
         Object.prototype.toString(idCountry);
         idCountryCleaned = idCountry.replace(/\s/g, '_');
         officialName = ascData[i].name.official;
@@ -116,7 +148,9 @@ const orderAscend = (data) => {
             .append($(`<td id=${idCountryCleaned}><img src=${imgPath} class='img-fluid w-50'></td>`))
         );
     }
+
 }
+
 
 const orderDescend = (data) => {
     let desData = data.sort((a, b) => ('' + b.name.official).localeCompare(a.name.official));
@@ -156,7 +190,8 @@ const modal = (elementId) => {
     if (elementId !== '') {
         $.ajax({
             type: "GET",
-            url: `https://en.wikipedia.org/api/rest_v1/page/summary/${elementId}`,
+            url: (`https://en.wikipedia.org/api/rest_v1/page/summary/${elementId}`).normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+            // url: `https://en.wikipedia.org/api/rest_v1/page/summary/${elementId}`,
             dataType: "json",
             data: {
                 country: "country"
@@ -184,3 +219,69 @@ $('#table-countries').on('click', (e) => {
     e.stopPropagation();
     modal(elementId);
 })
+
+const contentFilter = (data) => {
+    let ascData = data.sort((a, b) => ('' + a.name.official).localeCompare(b.name.official));
+    for (let i = 0; i < ascData.length; i++) {
+        idCountry = ascData[i].name.official;
+        Object.prototype.toString(idCountry);
+        idCountryCleaned = idCountry.replace(/\s/g, '_');
+        officialName = ascData[i].name.official;
+        region = ascData[i].region;
+        population = ascData[i].population;
+        imgPath = ascData[i].flags.png
+
+        let firstLanguage, capital;
+        if (ascData[i].languages === undefined) {
+            firstLanguage = 'No language to display';
+        } else {
+            firstLanguage = Object.values(ascData[i].languages)[0];
+        }
+        if (ascData[i].capital === undefined) {
+            capital = 'No capital';
+        } else {
+            capital = Object.values(ascData[i].capital)[0];
+        }
+
+        $("#countries").append($(`<tr>`)
+            .append($(`<td id=${idCountryCleaned}> ${officialName} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${capital} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${region} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${firstLanguage} </td>`))
+            .append($(`<td id=${idCountryCleaned}> ${population} </td>`))
+            .append($(`<td id=${idCountryCleaned}><img src=${imgPath} class='img-fluid w-50'></td>`))
+        );
+    }
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("textFilter");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("countries");
+    tr = table.getElementsByTagName("tr");
+    for (var i = 0; i < tr.length; i++) {
+        var tds = tr[i].getElementsByTagName("td");
+        var flag = false;
+        for (var j = 0; j < tds.length; j++) {
+            var td = tds[j];
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            tr[i].style.display = "";
+        }
+        else {
+            tr[i].style.display = "none";
+        }
+    }
+}
+
+// const filter = (data) => {
+//     filterSearch = $("#filterText").val();
+//     console.log(filterSearch);
+//     let results = data.filter(result => result.includes(filterSearch));
+//     if (asc) {
+//         orderAscend(results);
+//     } else if (!asc) {
+//         orderDescend(results);
+//     }
+// }

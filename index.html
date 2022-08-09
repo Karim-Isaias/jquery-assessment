@@ -7,11 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
 </head>
 
 <body>
     <div class="container m-1">
         <button class="btn btn-primary" id="sort">Desc</button>
+        <select value="--Select the column--">
+            <option>
+                --Select the column--
+            </option>
+            <option>
+                
+            </option>
+        </select>
+        <input type="text" id="textFilter" placeholder="Search for names or countries.." title="Type in a name or a country">
     </div>
     <div class="table-responsive-md text-center">
         <table id="table-countries" class="table table-dark table-bordered table-hover">
@@ -35,11 +45,12 @@
         <button type="button" class="btn btn-secondary" id="next">Next</button>
     </div>
 
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
-        </script>
+    </script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
     <script src="countries.js"></script>
 </body>
 
