@@ -1,6 +1,7 @@
 $(document).ready(() => {
-    $('a.printPage').on('click', () => {
-        window.print();
-        return false;
-    })
+    let maxLength = 15;
+    $('#textarea').on('keyup', ()  => {
+        let textlen = maxLength - $('#textarea').val().length;
+        $('#rchars').text(textlen);
+    });
 });
