@@ -1,14 +1,12 @@
 $(document).ready(() => {
-    let test = {
-        id: "div",
-        class: "divclass",
-        css: {
-            "color": "Green"
-        }
-    };
-    $('#addDiv').on('click', () => {
-        var $div = $("<div>", test);
-        $div.html("New Division");
-        $("body").append($div);
-    })
+
 });
+
+const moveButton = (elem) => {
+    if( $(elem).parent().attr("id") == "nonSelected" ){
+        $(elem).detach().appendTo('#selected');
+    }
+    else{
+        $(elem).detach().appendTo('#nonSelected'); 
+    }
+}

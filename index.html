@@ -11,8 +11,16 @@
 
 <body>
 
-    <p>New division(s) below</p>
-    <input type="button" id="addDiv" value="Click to add new division" />
+    <div id="nonSelected">
+        <!--Declaring BUTTON TAGS -->
+        <button id="btnDefault" onclick="moveButton(this)" type="button">Button1</button>
+        <button id="btnPrimary" onclick="moveButton(this)" type="button">Button2</button>
+
+        <button id="btnDanger" onclick="moveButton(this)" type="button">Button3</button>
+
+    </div>
+    <div id="selected">
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
