@@ -1,6 +1,14 @@
 $(document).ready(() => {
-    $('p').each(() => {
-        var pdata = $('div p');
-        pdata.html( pdata.text().replace(/(^\w+)/,'$1') );
-    });
+    let test = {
+        id: "div",
+        class: "divclass",
+        css: {
+            "color": "Green"
+        }
+    };
+    $('#addDiv').on('click', () => {
+        var $div = $("<div>", test);
+        $div.html("New Division");
+        $("body").append($div);
+    })
 });
