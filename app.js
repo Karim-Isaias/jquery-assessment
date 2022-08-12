@@ -1,6 +1,5 @@
 $(document).ready(() => {
-    $('input').on('keyup', () => {
-        let tvalue = $('input').val();
-        console.log(tvalue);
+    $('#removeClasses').on('click', () => {
+        $('#item').removeClass();
     })
 });
