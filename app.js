@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    $('#removeClasses').on('click', () => {
-        $('#item').removeClass();
+    $('#removeStyle').on('click', () => {
+        $('#MyInput').css('border', '0');
     })
 });
