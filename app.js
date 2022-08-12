@@ -1,9 +1,5 @@
 $(document).ready(() => {
-    $('#newListElement').on('click', () => {
-        $("#header ul").append('<li>Java</li>');
+    $('#removeOptions').on('click', () => {
+        $('#myColor').empty().append('<option selected="selected" value="test">White</option>');
     })
 });
-
-// const new_element = () => {
-//     $("#header ul").append('<li>Java</li>');
-// }
